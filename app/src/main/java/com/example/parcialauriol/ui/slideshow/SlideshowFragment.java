@@ -20,9 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.parcialauriol.R;
-import com.example.parcialauriol.databinding.FragmentSlideshowBinding;
-import com.example.parcialauriol.ui.ManejadorNotas;
-import com.example.parcialauriol.ui.gallery.GalleryViewModel;
 import com.example.parcialauriol.ui.gallery.NotasAdapter;
 
 import java.util.ArrayList;
@@ -32,7 +29,6 @@ public class SlideshowFragment extends Fragment {
     private SlideshowViewModel mViewModel;
     private RecyclerView mRecyclerView;
     private NotasAdapter mAdapter;
-    private ManejadorNotas mManejadorNotas;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -47,19 +43,13 @@ public class SlideshowFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mManejadorNotas = ManejadorNotas.getInstance();
         mViewModel = new ViewModelProvider(this).get(SlideshowViewModel.class);
-        mViewModel.getNotas().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
-            @Override
-            public void onChanged(ArrayList<String> notas) {
-                mAdapter.setNotas(notas);
-            }
-        });
+        mViewModel.getNotas().observe(getViewLifecycleOwner(), notas -> mAdapter.setNotas(notas));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mViewModel.setNotas(mManejadorNotas.obtenerNotas());
+        mAdapter.setNotas(mViewModel.getNotas().getValue());
     }
 }

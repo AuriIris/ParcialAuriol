@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 
+import com.example.parcialauriol.ui.gallery.NotasAdapter;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -16,10 +17,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.parcialauriol.databinding.ActivityMainBinding;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
+    private ArrayList<String> notas = new ArrayList<>();
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private NotasAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,16 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        adapter = new NotasAdapter(this, notas);
+    }
+
+    public ArrayList<String> getNotas() {
+        return notas;
+    }
+
+    public void agregarNota(String nota) {
+        adapter.agregarNota(nota);
     }
 
     @Override

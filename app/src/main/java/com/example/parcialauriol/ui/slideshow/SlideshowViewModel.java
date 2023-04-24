@@ -10,18 +10,17 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 
-import com.example.parcialauriol.ui.ManejadorNotas;
+import com.example.parcialauriol.ui.gallery.NotasAdapter;
 
 import java.util.ArrayList;
 
-public class SlideshowViewModel  extends AndroidViewModel {
+public class SlideshowViewModel extends AndroidViewModel {
 
-    private ManejadorNotas mManejadorNotas;
+    private NotasAdapter adapter;
     private MutableLiveData<ArrayList<String>> mNotas;
 
     public SlideshowViewModel(@NonNull Application application) {
         super(application);
-        mManejadorNotas = ManejadorNotas.getInstance();
         mNotas = new MutableLiveData<>(new ArrayList<>()); // Inicializar mNotas
     }
 
@@ -32,11 +31,8 @@ public class SlideshowViewModel  extends AndroidViewModel {
     public void setNotas(ArrayList<String> notas) {
         ArrayList<String> copiaNotas = new ArrayList<>(notas);
         for (String nota : copiaNotas) {
-            mManejadorNotas.agregarNota(nota);
+            adapter.agregarNota(nota);
         }
-        mNotas.postValue(mManejadorNotas.obtenerNotas());
+        mNotas.postValue(adapter.obtenerNotas());
     }
-
-
-
 }

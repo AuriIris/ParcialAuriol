@@ -16,6 +16,7 @@ import java.util.List;
 
 public class NotasAdapter extends RecyclerView.Adapter<NotasAdapter.NotaViewHolder> {
 
+    private static NotasAdapter instance;
     private ArrayList<String> notas;
     private Context context;
 
@@ -23,10 +24,12 @@ public class NotasAdapter extends RecyclerView.Adapter<NotasAdapter.NotaViewHold
         this.context = context;
         this.notas = notas;
     }
+
+
     public void setNotas(ArrayList<String> notas) {
-        //Log.d("NotasAdapter", "setNotas: Notas recibidas = " + notas);
         this.notas = notas;
         notifyDataSetChanged();
+        Log.d("Nota", "Contenido de notas: " + notas.toString());
     }
 
     @NonNull
@@ -47,6 +50,7 @@ public class NotasAdapter extends RecyclerView.Adapter<NotasAdapter.NotaViewHold
     public int getItemCount() {
         return notas != null ? notas.size() : 0;
     }
+
     public static class NotaViewHolder extends RecyclerView.ViewHolder {
         public TextView tvNota;
 
@@ -54,6 +58,16 @@ public class NotasAdapter extends RecyclerView.Adapter<NotasAdapter.NotaViewHold
             super(itemView);
             tvNota = itemView.findViewById(R.id.tv_nota);
         }
+    }
+
+    public void agregarNota(String nota) {
+        notas.add(nota);
+        Log.d("Nota", "Contenido de notas: " + notas.toString());
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<String> obtenerNotas() {
+        return notas;
     }
 
 }

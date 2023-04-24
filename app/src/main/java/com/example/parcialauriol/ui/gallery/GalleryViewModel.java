@@ -12,19 +12,18 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.parcialauriol.R;
-import com.example.parcialauriol.ui.ManejadorNotas;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class GalleryViewModel extends AndroidViewModel {
     private MutableLiveData<ArrayList<String>> mNotas;
-    private ManejadorNotas mManejadorNotas;
+    private NotasAdapter mNotasAdapter;
 
     public GalleryViewModel(@NonNull Application application) {
         super(application);
-        mNotas = new MutableLiveData<>();
-        mNotas.setValue(new ArrayList<>()); // Inicializar la lista vacía
-        mManejadorNotas = ManejadorNotas.getInstance();
+        mNotas = new MutableLiveData<>(new ArrayList<>());
+        mNotasAdapter = new NotasAdapter(application.getApplicationContext(), mNotas.getValue());
     }
 
     public LiveData<ArrayList<String>> getNotas() {
@@ -32,7 +31,11 @@ public class GalleryViewModel extends AndroidViewModel {
     }
 
     public void agregarNota(String nota) {
-        mManejadorNotas.agregarNota(nota);
-        mNotas.setValue(mManejadorNotas.obtenerNotas());
+        mNotasAdapter.agregarNota(nota);
+        mNotas.setValue(mNotasAdapter.obtenerNotas());
+    }
+
+    public ArrayList<String> obtenerNotas() {
+        return mNotas.getValue();
     }
 }
