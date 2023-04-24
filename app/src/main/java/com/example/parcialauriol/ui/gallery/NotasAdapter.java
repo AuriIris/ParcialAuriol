@@ -14,60 +14,44 @@ import com.example.parcialauriol.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotasAdapter extends RecyclerView.Adapter<NotasAdapter.NotaViewHolder> {
-
-    private static NotasAdapter instance;
-    private ArrayList<String> notas;
-    private Context context;
-
-    public NotasAdapter(Context context, ArrayList<String> notas) {
-        this.context = context;
-        this.notas = notas;
-    }
+public class NotasAdapter extends RecyclerView.Adapter<NotasAdapter.ViewHolder>{
+    private List<String> actividades;
+    Context context;
+    private LayoutInflater inflater;
 
 
-    public void setNotas(ArrayList<String> notas) {
-        this.notas = notas;
+    public void setActividades(Context context, List<String> actividades) {
+        this.actividades = actividades;
+        this.context=context;
         notifyDataSetChanged();
-        Log.d("Nota", "Contenido de notas: " + notas.toString());
     }
 
     @NonNull
     @Override
-    public NotaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card, parent, false);
-        NotaViewHolder vh = new NotaViewHolder(v);
-        return vh;
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NotaViewHolder holder, int position) {
-        String notaActual = notas.get(position);
-        holder.tvNota.setText(notaActual);
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        String nota = actividades.get(position);
+        holder.Tvnombre.setText(nota);
+
     }
 
     @Override
     public int getItemCount() {
-        return notas != null ? notas.size() : 0;
+        return actividades != null ? actividades.size() : 0;
     }
 
-    public static class NotaViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvNota;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView Tvnombre;
 
-        public NotaViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
-            tvNota = itemView.findViewById(R.id.tv_nota);
+            Tvnombre = itemView.findViewById(R.id.tv_nota);
         }
-    }
 
-    public void agregarNota(String nota) {
-        notas.add(nota);
-        Log.d("Nota", "Contenido de notas: " + notas.toString());
-        notifyDataSetChanged();
     }
-
-    public ArrayList<String> obtenerNotas() {
-        return notas;
-    }
-
 }

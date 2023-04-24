@@ -11,11 +11,11 @@
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Cargar" />
+            android:title="Listar" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Listar" />
+            android:title="Cargar" />
         <item
             android:id="@+id/salirFragment"
             android:icon="@drawable/ic_menu_slideshow"

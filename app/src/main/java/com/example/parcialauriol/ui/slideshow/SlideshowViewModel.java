@@ -2,6 +2,7 @@ package com.example.parcialauriol.ui.slideshow;
 
 import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -13,26 +14,26 @@ import androidx.lifecycle.ViewModel;
 import com.example.parcialauriol.ui.gallery.NotasAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SlideshowViewModel extends AndroidViewModel {
 
-    private NotasAdapter adapter;
-    private MutableLiveData<ArrayList<String>> mNotas;
-
     public SlideshowViewModel(@NonNull Application application) {
         super(application);
-        mNotas = new MutableLiveData<>(new ArrayList<>()); // Inicializar mNotas
     }
 
-    public LiveData<ArrayList<String>> getNotas() {
-        return mNotas;
-    }
-
-    public void setNotas(ArrayList<String> notas) {
-        ArrayList<String> copiaNotas = new ArrayList<>(notas);
-        for (String nota : copiaNotas) {
-            adapter.agregarNota(nota);
+    public List<String> agregarNota(List notas, String nota){
+        if(nota.length() == 0){
+            Toast.makeText(getApplication(), "Ingrese una nota!", Toast.LENGTH_SHORT).show();
+            return notas;
         }
-        mNotas.postValue(adapter.obtenerNotas());
+        else {
+            notas.add(nota);
+            Toast.makeText(getApplication(), "Nota agregada!", Toast.LENGTH_SHORT).show();
+            return notas;
+        }
+
     }
+
+
 }

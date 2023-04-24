@@ -1,6 +1,7 @@
 package com.example.parcialauriol.ui.gallery;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,37 +16,26 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.parcialauriol.MainActivity;
 import com.example.parcialauriol.R;
 import com.example.parcialauriol.databinding.FragmentGalleryBinding;
 public class GalleryFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
+    private RecyclerView rv;
+    private NotasAdapter ma;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-        final EditText editTextNota = root.findViewById(R.id.editText_nueva_nota);
-        Button buttonCargarNota = root.findViewById(R.id.button_cargar);
-        buttonCargarNota.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String nota = editTextNota.getText().toString().trim();
+        rv = root.findViewById(R.id.recycler_view_notas);
 
-                // Validar si la nota está vacía
-                if (nota.isEmpty()) {
-                    Toast.makeText(getContext(), "No se puede agregar una nota vacía", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        ma = new NotasAdapter();
+        rv.setAdapter(ma);
 
-                galleryViewModel.agregarNota(nota);
-
-                editTextNota.setText("");
-            }
+        GalleryViewModel actividadvm = new ViewModelProvider(requireActivity()).get(GalleryViewModel.class);
+        actividadvm.getActividades().observe(getViewLifecycleOwner(), actividades -> {
+            ma.setActividades(getContext(), MainActivity.notas);
         });
-
         return root;
-    }
-}
+    }}

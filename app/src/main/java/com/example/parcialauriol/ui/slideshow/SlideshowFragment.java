@@ -19,37 +19,47 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.parcialauriol.MainActivity;
 import com.example.parcialauriol.R;
+import com.example.parcialauriol.databinding.FragmentSlideshowBinding;
+import com.example.parcialauriol.ui.gallery.GalleryViewModel;
 import com.example.parcialauriol.ui.gallery.NotasAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SlideshowFragment extends Fragment {
 
-    private SlideshowViewModel mViewModel;
-    private RecyclerView mRecyclerView;
-    private NotasAdapter mAdapter;
+    private FragmentSlideshowBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
-        mRecyclerView = root.findViewById(R.id.recycler_view_notas);
-        mAdapter = new NotasAdapter(getContext(),new ArrayList<>());
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        SlideshowViewModel vm =
+                new ViewModelProvider(this).get(SlideshowViewModel.class);
+        GalleryViewModel gm =
+                new ViewModelProvider(this).get(GalleryViewModel.class);
+
+        binding = FragmentSlideshowBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+        binding.buttonCargar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gm.getActividades().observe(getActivity(), new Observer<List<String>>() {
+                    @Override
+                    public void onChanged(List<String> strings) {
+                        vm.agregarNota(MainActivity.notas,binding.editTextNuevaNota.getText()+"");
+                    }
+                });
+            }
+        });
+
         return root;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(SlideshowViewModel.class);
-        mViewModel.getNotas().observe(getViewLifecycleOwner(), notas -> mAdapter.setNotas(notas));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mAdapter.setNotas(mViewModel.getNotas().getValue());
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

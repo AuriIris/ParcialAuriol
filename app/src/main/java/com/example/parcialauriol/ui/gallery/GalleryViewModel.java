@@ -17,25 +17,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GalleryViewModel extends AndroidViewModel {
-    private MutableLiveData<ArrayList<String>> mNotas;
-    private NotasAdapter mNotasAdapter;
+
+    private MutableLiveData<List<String>> actividadesMutableLiveData;
 
     public GalleryViewModel(@NonNull Application application) {
         super(application);
-        mNotas = new MutableLiveData<>(new ArrayList<>());
-        mNotasAdapter = new NotasAdapter(application.getApplicationContext(), mNotas.getValue());
+        actividadesMutableLiveData = new MutableLiveData<>();
+        cargarActividades();
     }
 
-    public LiveData<ArrayList<String>> getNotas() {
-        return mNotas;
+    private void cargarActividades() {
+        List<String> actividades = new ArrayList<>();
+        actividadesMutableLiveData.setValue(actividades);
     }
 
-    public void agregarNota(String nota) {
-        mNotasAdapter.agregarNota(nota);
-        mNotas.setValue(mNotasAdapter.obtenerNotas());
-    }
-
-    public ArrayList<String> obtenerNotas() {
-        return mNotas.getValue();
+    public MutableLiveData<List<String>> getActividades() {
+        return actividadesMutableLiveData;
     }
 }
